@@ -1,5 +1,5 @@
 <?php
-$lifetime = 15 * 24 * 60 * 60; // 15 days
+$lifetime = 15 * 24 * 60 * 60; // 15 dager
 session_set_cookie_params($lifetime);
 session_start();
 
@@ -17,7 +17,7 @@ if (!isSessionValid()) {
     exit();
 }
 
-// Check session timeout
+// Sjekk session timeout
 $timeout_duration = 15 * 24 * 60 * 60;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
     session_unset();
@@ -26,7 +26,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
     exit();
 }
 
-// Update last activity time
+// Oppdater siste aktivitetstid
 $_SESSION['last_activity'] = time();
 
 $email = htmlspecialchars($_SESSION['email']);
@@ -43,6 +43,13 @@ $email = htmlspecialchars($_SESSION['email']);
         <h1>Velkommen, <?php echo $email; ?>!</h1>
         <p>Du er logget inn via session eller cookie.</p>
         
+        <nav>
+            <ul>
+                <li><a href="settings.php">Innstillinger</a></li>
+                <li><a href="utforsk.php">Utforsk</a></li>
+            </ul>
+        </nav>
+
         <form action="logout.php" method="post">
             <button type="submit">Logg ut</button>
         </form>
