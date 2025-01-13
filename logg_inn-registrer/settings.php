@@ -91,7 +91,7 @@ $stmt->fetch();
 $stmt->close();
 
 // Standard bilde hvis ingen profilbilde er satt
-$defaultImage = 'data:image/png;base64,' . base64_encode(file_get_contents('default.png'));
+$defaultImage = 'data:image/png;base64,' . base64_encode(file_get_contents('default.jpg'));
 $profileImage = $profilePicture ? 'data:image/png;base64,' . base64_encode($profilePicture) : $defaultImage;
 
 ?>

@@ -54,26 +54,26 @@ $htmlContent = "
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background: radial-gradient(circle, #4b0082, #1a1a1a, #8b008b);
+            color: #fff;
+            text-align: center;
         }
         .email-container {
             max-width: 600px;
-            margin: 20px auto;
-            background: #ffffff;
-            border: 1px solid #ddd;
+            margin: 40px auto;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #8b008b;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             padding: 20px;
         }
         .header {
-            text-align: center;
             padding: 20px;
-            background: #007bff;
-            color: white;
+            background: #8b008b;
+            color: #fff;
             border-radius: 8px 8px 0 0;
         }
         .header h1 {
@@ -82,7 +82,7 @@ $htmlContent = "
         }
         .content {
             padding: 20px;
-            text-align: center;
+            color: #ddd;
         }
         .code-box {
             display: inline-block;
@@ -90,30 +90,36 @@ $htmlContent = "
             padding: 15px 30px;
             font-size: 28px;
             font-weight: bold;
-            color: #007bff;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
+            color: #ff69b4;
+            background: #1a1a1a;
+            border: 2px dashed #ff69b4;
             border-radius: 5px;
         }
         .footer {
             margin-top: 20px;
-            text-align: center;
             font-size: 12px;
-            color: #666;
+            color: #bbb;
+        }
+        .footer a {
+            color: #ff69b4;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class='email-container'>
         <div class='header'>
-            <h1>Din 2FA-kode</h1>
+            <h1>PhotoShare - Din 2FA-kode</h1>
         </div>
         <div class='content'>
             <p>Hei,</p>
             <p>Her er din tofaktorautentiseringskode for å logge inn på kontoen din:</p>
             <div class='code-box'>$code</div>
             <p>Koden er gyldig i 5 minutter.</p>
-            <p>Hvis du ikke prøvde å logge inn, vennligst kontakt oss umiddelbart.</p>
+            <p>Hvis du ikke prøvde å logge inn, vennligst <a href='mailto:support@photoshare.com'>kontakt oss</a> umiddelbart.</p>
         </div>
         <div class='footer'>
             &copy; 2025 PhotoShare. Alle rettigheter forbeholdt.
@@ -122,6 +128,7 @@ $htmlContent = "
 </body>
 </html>
 ";
+
 
 $plainTextContent = "Din 2FA-kode er: $code\nKoden er gyldig i 5 minutter.";
 
