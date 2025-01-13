@@ -53,22 +53,78 @@ $htmlContent = "
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; }
-        .code { font-size: 1.5em; color: #007bff; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: #007bff;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .code-box {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 15px 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
-    <h1>Din 2FA-kode</h1>
-    <p>Her er din tofaktorautentiseringskode:</p>
-    <div class='code'>$code</div>
-    <p>Koden er gyldig i 5 minutter.</p>
+    <div class='email-container'>
+        <div class='header'>
+            <h1>Din 2FA-kode</h1>
+        </div>
+        <div class='content'>
+            <p>Hei,</p>
+            <p>Her er din tofaktorautentiseringskode for å logge inn på kontoen din:</p>
+            <div class='code-box'>$code</div>
+            <p>Koden er gyldig i 5 minutter.</p>
+            <p>Hvis du ikke prøvde å logge inn, vennligst kontakt oss umiddelbart.</p>
+        </div>
+        <div class='footer'>
+            &copy; 2025 PhotoShare. Alle rettigheter forbeholdt.
+        </div>
+    </div>
 </body>
 </html>
 ";
 
 $plainTextContent = "Din 2FA-kode er: $code\nKoden er gyldig i 5 minutter.";
 
-// Add content to email
 $emailMessage->addContent("text/plain", $plainTextContent);
 $emailMessage->addContent("text/html", $htmlContent);
 

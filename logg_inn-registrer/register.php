@@ -221,6 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="register-knapp">Lag Bruker</button>
             <p>Har du en bruker? <a class="tilbake" href="./login.php">Logg inn</a></p>
+            <p>Eller vil du tilbake?<a class="tilbake" href="./index.php"> Hjem</a></p>
         </form>
     </div>
 </body>

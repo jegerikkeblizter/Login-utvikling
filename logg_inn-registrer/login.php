@@ -256,6 +256,7 @@ $conn->close();
             </div>
             <button type="submit" class="login-knapp">Logg inn</button>
             <p>Har du ikke bruker? <a class="tilbake" href="./register.php">Registrer deg</a></p>
+            <p>Eller vil du tilbake?<a class="tilbake" href="./index.php"> Hjem</a></p>
         </form>
     </div>
 </body>
