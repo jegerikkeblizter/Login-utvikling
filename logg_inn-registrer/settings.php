@@ -297,7 +297,7 @@ $profileImage = $profilePicture ? 'data:image/png;base64,' . base64_encode($prof
         }
 
         .popup input {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #4b0082;

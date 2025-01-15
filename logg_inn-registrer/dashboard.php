@@ -154,13 +154,11 @@ $stmt->close();
         }
 
         .side-menu .explore {
-            background-color: #ff69b4;
             color: #fff;
-            font-weight: bold;
         }
 
         .side-menu .explore:hover {
-            background-color: #d63d7a;
+            background-color: #4b0082;
         }
 
         .logout {
@@ -200,6 +198,7 @@ $stmt->close();
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
+            margin-top: 35px;
         }
 
         .photo-gallery img {
@@ -353,7 +352,7 @@ $stmt->close();
     <!-- Side menu -->
     <div class="side-menu">
         <a href="explore.php" class="explore">Utforsk</a>
-        <a href="#" onclick="openEditPanel()">Rediger Profil</a>
+        <a href="#" onclick="openEditPanel()">Last opp</a>
         <a href="settings.php">Innstillinger</a>
         <a href="terms.php">Vilkår</a>
         <div class="logout">
@@ -382,7 +381,7 @@ $stmt->close();
 
     <!-- Edit Profile Panel -->
     <div class="edit-profile-panel" id="editProfilePanel">
-        <h3>Rediger Profil</h3>
+        <h3>Last opp</h3>
 
         <!-- Opplastingsskjema -->
         <form id="uploadForm" enctype="multipart/form-data">

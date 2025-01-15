@@ -26,7 +26,7 @@
                 background-position: 0% 50%;
             }
             50% {
-                background-position: 700% 1400%;
+                background-position: 700% 1400%;    
             }
             100% {
                 background-position: 0% 50%;

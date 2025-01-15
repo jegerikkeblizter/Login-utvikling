@@ -29,13 +29,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        header .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            text-transform: uppercase;
-        }
-
         nav {
             display: flex;
             justify-content: space-between;
@@ -209,19 +202,27 @@
                 display: none;
             }
         }
+
+        #logo{
+            max-width: 280px;
+            margin-left: -20px;
+        }
+
+        .login-button{
+            margin-right: 30px;
+        }
  
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <span class="logo">photoshare</span>
+            <span class="logo"><img id="logo" src="logo.png" alt="logo"></span>
             <span class="menu-toggle" onclick="toggleMenu()">☰</span>
             <ul>
                 <li><a href="index.php">Hjem</a></li>
-                <li><a href="about.php">Om Meg</a></li>
-                <li><a href="gallery.php">Galleri</a></li>
-                <li><a href="login.php">Logg Inn</a></li>
+                <li><a href="about.php">Om Oss</a></li>
+                <li class="login-button"><a href="login.php">Logg Inn</a></li>
             </ul>
         </nav>
     </header>
