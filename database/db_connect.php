@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "users";
+$dbname = "photoshare";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

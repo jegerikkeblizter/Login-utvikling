@@ -2,6 +2,7 @@
 session_start();
 require_once '../database/db_connect.php';
 
+// Ensure the request method is POST and a file is uploaded
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
     $userId = $_SESSION['user_id'] ?? null;
 
@@ -12,17 +13,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
 
     $file = $_FILES['photo'];
 
-    // Sjekk om filen ble lastet opp uten feil
+    // Set maximum file size (match PHP configuration)
+    $maxFileSize = 40 * 1024 * 1024; // 40 MB
+
+    // Check if the file was uploaded without errors
     if ($file['error'] === UPLOAD_ERR_OK) {
+        // Check file size
+        if ($file['size'] > $maxFileSize) {
+            echo json_encode(['success' => false, 'error' => 'Filen overstiger maks størrelse på 40 MB.']);
+            exit;
+        }
+
+        // Read the file content
         $imageData = file_get_contents($file['tmp_name']);
 
-        // Sett inn bildet i databasen
+        // Insert the image into the database
         $stmt = $conn->prepare("INSERT INTO photos (user_id, image) VALUES (?, ?)");
         if (!$stmt) {
             echo json_encode(['success' => false, 'error' => 'Kunne ikke forberede spørringen: ' . $conn->error]);
             exit;
         }
 
+        $null = null; // Placeholder for binary data
         $stmt->bind_param("ib", $userId, $null);
         $stmt->send_long_data(1, $imageData);
 
@@ -34,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
 
         $stmt->close();
     } else {
-        // Håndter forskjellige filopplastingsfeil
+        // Handle specific upload errors
         $errorMessage = match ($file['error']) {
             UPLOAD_ERR_INI_SIZE => "Filen overstiger maks størrelse (upload_max_filesize).",
             UPLOAD_ERR_FORM_SIZE => "Filen overstiger maks størrelse spesifisert i skjemaet.",
