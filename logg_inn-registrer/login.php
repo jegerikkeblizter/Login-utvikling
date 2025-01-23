@@ -1,57 +1,70 @@
 <?php
+ob_start(); // Start output buffering for å forhindre output før header()
 session_start();
 include '../database/db_connect.php';
 
 $message = "";
 $toastClass = "";
 
-if (isset($_SESSION['user_id'], $_SESSION['email'])) {
-    $stmt = $conn->prepare("SELECT id FROM userdata WHERE id = ? AND email = ?");
-    $stmt->bind_param("is", $_SESSION['user_id'], $_SESSION['email']);
-    $stmt->execute();
-    $stmt->store_result();
+try {
+    if (isset($_SESSION['user_id'], $_SESSION['email'])) {
+        $stmt = $conn->prepare("SELECT id FROM userdata WHERE id = ? AND email = ?");
+        $stmt->bind_param("is", $_SESSION['user_id'], $_SESSION['email']);
+        $stmt->execute();
+        $stmt->store_result();
 
-    if ($stmt->num_rows > 0) {
-        header("Location: dashboard.php");
-        exit();
-    }
-    session_unset();
-    session_destroy();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $stmt = $conn->prepare("SELECT id, password FROM userdata WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($user_id, $hashed_password);
-        $stmt->fetch();
-
-        if (password_verify($password, $hashed_password)) {
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['email'] = $email;
-
-            header("Location: send_2fa_code.php");
+        if ($stmt->num_rows > 0) {
+            header("Location: dashboard.php");
             exit();
-        } else {
-            $message = "Feil passord.";
-            $toastClass = "bg-danger";
         }
-    } else {
-        $message = "E-post ikke funnet.";
-        $toastClass = "bg-warning";
+        session_unset();
+        session_destroy();
     }
 
-    $stmt->close();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+
+        if (empty($email) || empty($password)) {
+            $message = "E-post og passord er påkrevd.";
+            $toastClass = "bg-danger";
+        } else {
+            $stmt = $conn->prepare("SELECT id, password FROM userdata WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->store_result();
+
+            if ($stmt->num_rows > 0) {
+                $stmt->bind_result($user_id, $hashed_password);
+                $stmt->fetch();
+
+                if (password_verify($password, $hashed_password)) {
+                    session_regenerate_id(true); // Beskytt mot session-fikling
+                    $_SESSION['user_id'] = $user_id;
+                    $_SESSION['email'] = $email;
+
+                    header("Location: send_2fa_code.php");
+                    exit();
+                } else {
+                    $message = "Feil passord.";
+                    $toastClass = "bg-danger";
+                }
+            } else {
+                $message = "E-post ikke funnet.";
+                $toastClass = "bg-warning";
+            }
+            $stmt->close();
+        }
+    }
+} catch (Exception $e) {
+    $message = "En feil oppstod: " . $e->getMessage();
+    $toastClass = "bg-danger";
 }
+
 $conn->close();
+ob_end_flush(); // Avslutt output buffering
 ?>
+
 <!DOCTYPE html>
 <html lang="no">
 <head>
@@ -235,7 +248,7 @@ $conn->close();
     <div class="background"></div>
     <div class="container">
         <?php if ($message): ?>
-            <div class="toast <?php echo $toastClass; ?>" role="alert" style="background-color: red; <?php echo $toastColor; ?>;">
+            <div class="toast <?php echo $toastClass; ?>" role="alert" style="background-color: red; z-index: 10; <?php echo $toastColor; ?>;">
                 <?php echo $message; ?>
                 <button onclick="this.parentElement.style.display='none'">×</button>
             </div>

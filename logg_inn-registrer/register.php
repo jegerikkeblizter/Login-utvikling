@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="background"></div>
     <div class="container">
         <?php if ($message): ?>
-            <div class="toast" style="background-color: <?php echo $toastColor; ?>;">
+            <div class="toast" style="z-index: 10; background-color:<?php echo $toastColor; ?>;">
                 <?php echo $message; ?>
                 <button onclick="this.parentElement.style.display='none'">×</button>
             </div>

@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 session_start();
 include '../database/db_connect.php';
 
@@ -20,14 +21,8 @@ $code = random_int(100000, 999999);
 $_SESSION['2fa_code'] = $code;
 $_SESSION['2fa_time'] = time();
 
-// Debugging output
-echo "2FA Code: " . $_SESSION['2fa_code'] . "<br>";
-
 // Fetch the API key from the database
 $stmt = $conn->prepare("SELECT api_key FROM api_keys WHERE key_name = ?");
-if (!$stmt) {
-    die("SQL error: " . $conn->error);
-}
 $key_name = "SENDGRID_API_KEY";
 $stmt->bind_param("s", $key_name);
 $stmt->execute();
@@ -36,7 +31,8 @@ $stmt->fetch();
 $stmt->close();
 
 if (!$api_key) {
-    die("SENDGRID_API_KEY not found in database.");
+    error_log("SENDGRID_API_KEY not found in database.");
+    die("Kan ikke sende e-post. Vennligst kontakt support.");
 }
 
 // Create and send the email
@@ -48,7 +44,7 @@ $emailMessage->addTo($email, "User");
 // Email content
 $htmlContent = "
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='no'>
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
@@ -129,7 +125,6 @@ $htmlContent = "
 </html>
 ";
 
-
 $plainTextContent = "Din 2FA-kode er: $code\nKoden er gyldig i 5 minutter.";
 
 $emailMessage->addContent("text/plain", $plainTextContent);
@@ -144,9 +139,13 @@ try {
         header("Location: verify_code.php");
         exit();
     } else {
+        error_log("SendGrid-feil. Statuskode: " . $response->statusCode());
         echo "Kunne ikke sende 2FA-koden. Feilkode: " . $response->statusCode();
     }
 } catch (Exception $e) {
-    echo "Feil ved sending av e-post: " . $e->getMessage();
+    error_log("Feil ved sending av e-post: " . $e->getMessage());
+    echo "En feil oppstod under sending av e-posten. Vennligst prøv igjen.";
 }
+
+ob_end_flush(); // Avslutt output buffering
 ?>
